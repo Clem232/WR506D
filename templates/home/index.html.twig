@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <style>
+        body { background:#f9f9f9; font-family: Arial, sans-serif; }
+        .container { margin: 2em auto; max-width: 900px; padding: 2em; background:#fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { margin-top: 0; }
+        h2 { margin-bottom: .5em; color:#333; }
+        ul { margin: 0 0 1em 1.5em; }
+    </style>
+
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p>TechSupport360 est une entreprise de services informatiques qui gère le support technique pour plusieurs PME.</p>
+
+        <h2>Problèmes actuels</h2>
+        <ul>
+            <li>Tickets oubliés</li>
+            <li>Suivi compliqué</li>
+            <li>Pas de traçabilité</li>
+        </ul>
+
+        <h2>Besoin exprimé</h2>
+        <p>“Nous avons besoin d’un outil centralisé de gestion des tickets accessible via une API.”</p>
+
+        <h2>Objectifs</h2>
+        <ul>
+            <li>Créer / suivre des tickets (clients)</li>
+            <li>Traiter les tickets assignés (agents)</li>
+            <li>Administration des catégories et utilisateurs (admins)</li>
+        </ul>
+    </div>
+{% endblock %}
