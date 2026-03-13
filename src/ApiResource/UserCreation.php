@@ -6,7 +6,11 @@ use ApiPlatform\Metadata\Post;
 use App\State\Processor\CreateUserProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Post(processor: CreateUserProcessor::class)]
+#[Post(
+    processor: CreateUserProcessor::class,
+    security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')",
+    securityMessage: "Seuls les administrateurs peuvent créer des utilisateurs."
+)]
 class UserCreation
 {
     #[Assert\NotBlank(message: 'Email is required')]

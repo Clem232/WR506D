@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Delete;
 use App\Entity\Trait\TimestampTrait;
 use App\Entity\Trait\UuidTrait;
 use App\Repository\CommentRepository;
+use App\State\Processor\CommentProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,7 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(normalizationContext: ['groups' => ['comment:read']]),
         new Post(
             denormalizationContext: ['groups' => ['comment:write']],
-            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_AGENT') or is_granted('ROLE_ADMIN')"
+            security: "is_granted('ROLE_CLIENT') or is_granted('ROLE_AGENT') or is_granted('ROLE_ADMIN')",
+            processor: CommentProcessor::class
         ),
         new Delete(
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN')"

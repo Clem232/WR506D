@@ -28,6 +28,9 @@ make connect
 # Installer les dépendances et configurer la base
 composer install
 php bin/console doctrine:migrations:migrate --no-interaction
+
+# (Optionnel) Charger les données de démonstration
+php bin/console doctrine:fixtures:load --no-interaction
 ```
 
 ### Sans Docker
@@ -37,6 +40,8 @@ composer install
 # Configurer la base de données dans .env.local
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate --no-interaction
+# (Optionnel) Charger les données de démonstration
+php bin/console doctrine:fixtures:load --no-interaction
 php bin/console server:start
 ```
 
