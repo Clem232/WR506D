@@ -9,7 +9,8 @@ final readonly class Tokens
     public function __construct(
         #[Autowire(param: 'kernel.secret')]
         private string $secret,
-    ) {}
+    ) {
+    }
 
     public function generateTokenForUser(string $email, \DateTime $expire = new \DateTime('+4 hours')): string
     {
@@ -20,7 +21,7 @@ final readonly class Tokens
 
         return base64_encode(json_encode([
             $encoded,
-            $this->sign($encoded),
+            $this->sign($encoded)
         ]));
     }
 
@@ -28,6 +29,7 @@ final readonly class Tokens
     {
         try {
             [$info, $sign] = json_decode(base64_decode($token), true);
+
             if ($sign !== $this->sign($info)) {
                 return null;
             }
@@ -50,6 +52,6 @@ final readonly class Tokens
 
     private function sign(string $encoded): string
     {
-        return hash('sha256', $encoded . '/' . $this->secret);
+        return hash('sha256', $encoded.'/'.$this->secret);
     }
 }

@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
 final class TokenAuthenticator extends AbstractAuthenticator
@@ -20,14 +19,15 @@ final class TokenAuthenticator extends AbstractAuthenticator
     public function __construct(
         private readonly Tokens $tokens,
         private readonly EntityManagerInterface $em,
-    ) {}
+    ) {
+    }
 
     public function supports(Request $request): ?bool
     {
         return $request->headers->has('Authorization');
     }
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(Request $request): SelfValidatingPassport
     {
         $token = $request->headers->get('Authorization');
 
@@ -35,6 +35,7 @@ final class TokenAuthenticator extends AbstractAuthenticator
             if (null !== $email = $this->tokens->decodeUserToken($token)) {
                 return $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
             }
+
             return null;
         }));
     }
@@ -46,6 +47,6 @@ final class TokenAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return new JsonResponse(['error' => 'Authentication failure.'], Response::HTTP_UNAUTHORIZED);
+        return new JsonResponse(['error' => 'Authentication failed.'], Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      DATABASE_URL: mysql://root:root@mysql:3306/wr506d
+      APP_ENV: dev
+      APP_SECRET: your-super-secret-key-change-me
+      VERSION: 1.0.0
+    depends_on:
+      - mysql
+    volumes:
+      - .:/app
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wr506d
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:

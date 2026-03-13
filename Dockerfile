@@ -1,28 +1,17 @@
-FROM dunglas/frankenphp:1-php8.4 AS frankenphp_upstream
+FROM dunglas/frankenphp:latest
 
-FROM frankenphp_upstream AS frankenphp_base
+RUN install-php-extensions \
+    pdo_mysql \
+    intl \
+    zip
 
 WORKDIR /app
 
-VOLUME /app/var/
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	acl \
-	file \
-	gettext \
-	git \
-	&& rm -rf /var/lib/apt/lists/*
+COPY . .
 
-RUN set -eux; \
-	install-php-extensions \
-		@composer \
-		apcu \
-		intl \
-		opcache \
-		zip \
-		pdo_mysql \
-		redis
+RUN php bin/console cache:clear
 
-COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
-
-COPY ./ /app
+EXPOSE 80

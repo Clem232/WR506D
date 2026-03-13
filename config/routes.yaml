@@ -3,3 +3,6 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+api_platform_routes:
+    resource: api_platform.yaml

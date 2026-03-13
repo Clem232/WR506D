@@ -1,7 +1,20 @@
 api_platform:
-    title: Hello API Platform
-    version: 1.0.0
+    title: 'TechSupport360 API'
+    description: |
+        API REST de gestion de tickets pour TechSupport360.
+
+        Cette API permet de :
+        - Créer et suivre des tickets de support technique
+        - Gérer les catégories de tickets
+        - Gérer les utilisateurs et leurs rôles (Client, Agent, Admin)
+        - Commenter les tickets pour la communication client/agent
+
+        Authentification par token requis pour accéder aux endpoints protégés.
+        Envoyez le token dans le header Authorization après login via POST /api/login.
+    version: '1.0.0'
     defaults:
-        stateless: true
-        cache_headers:
-            vary: ['Content-Type', 'Authorization', 'Origin']
+        pagination_items_per_page: 10
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Entity'
+            - '%kernel.project_dir%/src/ApiResource'
